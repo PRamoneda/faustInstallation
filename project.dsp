@@ -46,10 +46,15 @@ formula(a,s,d,f,g) = ((a*256 + s*510 + d*1020 + f*2040 + g*4080) / (ba.if(((a+s+
 
 
 // main functions
-analizador = spectral_level_demo: printar: formula;
+analizador = spectral_level_demo: printar: formula:si.smooth(ba.tau2pole(2));
 recursividad = _:queBanda:hbargraph("La banda en la que se estan generando ",0,5);
 
+// sensors
+acelerometro= hslider("acelerometro[acc: 0 0 -10 0 10]",0,0,4000,100) : si.smoo; 
+giroscopio= hslider("giroscopio[acc: 0 0 -10 0 10]",0,0,2000,100) : si.smoo;
+sensors = _, acelerometro: +, giroscopio: -;
+
 //main
-process = os.osc(herzios1) + os.osc(herzios2): (analizador) ~ (recursividad): os.osc; 
+process = os.osc(herzios1) + os.osc(herzios2): (analizador) ~ (recursividad): sensors: os.osc; 
 
 
